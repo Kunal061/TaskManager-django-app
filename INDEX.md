@@ -16,7 +16,9 @@ Start here if you're new to the project:
 
 | Document | Description | When to Use |
 |----------|-------------|-------------|
-| [README.md](README.md) | Main project documentation | First time setup |
+| [README.md](README.md) | Main project documentation with all issues | First time setup & troubleshooting |
+| [DEPLOY_COMMANDS.md](DEPLOY_COMMANDS.md) | Complete deployment commands guide | Deploying & managing application |
+| [COMMANDS_CHEATSHEET.md](COMMANDS_CHEATSHEET.md) | Quick copy-paste commands | Quick reference |
 | [QUICKSTART.md](QUICKSTART.md) | Quick command reference | Day-to-day operations |
 | [EC2_DEPLOYMENT_GUIDE.md](EC2_DEPLOYMENT_GUIDE.md) | Complete EC2 deployment guide | Deploying to AWS |
 | [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) | Comprehensive project overview | Understanding the project |
@@ -39,8 +41,13 @@ Start here if you're new to the project:
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
-| [deploy.sh](deploy.sh) | EC2 automated setup | `./deploy.sh` |
+| [deploy-sqlite.sh](deploy-sqlite.sh) | SQLite deployment (current) | `./deploy-sqlite.sh` |
+| [deploy-ec2.sh](deploy-ec2.sh) | EC2 automated deployment | `./deploy-ec2.sh` |
+| [deploy.sh](deploy.sh) | General deployment | `./deploy.sh` |
 | [start.sh](start.sh) | Local development | `./start.sh` |
+| [fix-migration.sh](fix-migration.sh) | Fix migration issues | `./fix-migration.sh` |
+| [fix-and-deploy.sh](fix-and-deploy.sh) | Clean rebuild | `./fix-and-deploy.sh` |
+| [ultimate-fix.sh](ultimate-fix.sh) | Ultimate troubleshooting | `./ultimate-fix.sh` |
 | [git-setup.sh](git-setup.sh) | Git initialization | `./git-setup.sh` |
 | [manage.py](manage.py) | Django management | `python manage.py <command>` |
 
