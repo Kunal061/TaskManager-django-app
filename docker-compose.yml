@@ -9,8 +9,10 @@ services:
       - "9000:9000"
     env_file:
       - .env
-    depends_on:
-      - db
+    # Database dependency removed - using SQLite by default
+    # Uncomment below if using PostgreSQL
+    # depends_on:
+    #   - db
 
   db:
     image: postgres:15-alpine
