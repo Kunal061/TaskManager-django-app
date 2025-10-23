@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Marketplace</title>
+  </head>
+  <body>
+    <h1>Marketplace</h1>
+    <ul>
+    {% for p in products %}
+      <li>
+        <a href="{% url 'marketplace:product_detail' p.pk %}">{{ p.title }}</a> — ${{ p.price }}
+      </li>
+    {% empty %}
+      <li>No products yet.</li>
+    {% endfor %}
+    </ul>
+  </body>
+  </html>

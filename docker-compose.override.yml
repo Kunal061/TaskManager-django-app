@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+  command: python manage.py runserver 0.0.0.0:8010
+    volumes:
+      - .:/app:rw
+    environment:
+      DJANGO_DEBUG: '1'
+      DB_HOST: db
+    ports:
+      - "8010:8010"
+version: '3.8'
+services:
+  web:
+  command: python manage.py runserver 0.0.0.0:7000
+    volumes:
+      - .:/app:rw
+    environment:
+      DJANGO_DEBUG: '1'
+      DB_HOST: db
+    ports:
+      - "7000:7000"
