@@ -9,11 +9,13 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     postgresql-client \
     gcc \
     python3-dev \
-    musl-dev \
+    libpq-dev \
+    build-essential \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
