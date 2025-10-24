@@ -9,20 +9,17 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Set work directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies in a single layer to save space
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        postgresql-client \
         gcc \
-        g++ \
-        libpq-dev \
-        build-essential \
-        curl && \
+        libpq-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.txt /app/
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy project
 COPY . /app/
