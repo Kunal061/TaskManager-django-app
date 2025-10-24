@@ -210,39 +210,72 @@ else
 fi
 
 # Wait for services
-print_info "Waiting for services to initialize (15 seconds)..."
-for i in {15..1}; do
+print_info "Waiting for services to initialize..."
+for i in {30..1}; do
     echo -ne "${CYAN}⏳ $i seconds remaining...${NC}\r"
     sleep 1
 done
 echo ""
+echo ""
 
-# Check container status
+# Check container status with retries
 print_info "Checking container status..."
-if docker-compose ps | grep -q "Up"; then
-    print_success "Containers are running"
-else
-    print_error "Containers failed to start!"
-    echo ""
-    print_info "Container logs:"
-    docker-compose logs web
-    exit 1
-fi
+max_retries=5
+retry_count=0
+
+while [ $retry_count -lt $max_retries ]; do
+    if docker-compose ps | grep -q "Up"; then
+        print_success "Containers are running"
+        break
+    else
+        retry_count=$((retry_count + 1))
+        if [ $retry_count -lt $max_retries ]; then
+            print_warning "Containers not ready, retrying ($retry_count/$max_retries)..."
+            sleep 5
+        else
+            print_error "Containers failed to start after $max_retries attempts!"
+            echo ""
+            print_info "Container logs:"
+            docker-compose logs web
+            exit 1
+        fi
+    fi
+done
 
 echo ""
 
 # Database Migration
 print_header "📊 Database Setup"
 print_info "Running migrations..."
-docker-compose exec -T web python manage.py migrate --noinput
 
-if [ $? -eq 0 ]; then
-    print_success "Migrations completed"
-else
-    print_error "Migration failed!"
-    docker-compose logs web
-    exit 1
-fi
+# Wait for container to be fully ready
+sleep 5
+
+# Run migrations with retry logic
+max_migration_retries=3
+migration_retry=0
+
+while [ $migration_retry -lt $max_migration_retries ]; do
+    if docker-compose exec -T web python manage.py migrate --noinput; then
+        print_success "Migrations completed"
+        break
+    else
+        migration_retry=$((migration_retry + 1))
+        if [ $migration_retry -lt $max_migration_retries ]; then
+            print_warning "Migration failed, retrying ($migration_retry/$max_migration_retries)..."
+            print_info "Waiting for database to be ready..."
+            sleep 10
+        else
+            print_error "Migration failed after $max_migration_retries attempts!"
+            echo ""
+            print_info "Container logs:"
+            docker-compose logs web
+            echo ""
+            print_warning "Trying to continue anyway..."
+            break
+        fi
+    fi
+done
 
 echo ""
 
