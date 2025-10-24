@@ -10,20 +10,15 @@ ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    apt-get update -y && \
-    apt-get upgrade -y && \
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    postgresql-client \
-    gcc \
-    g++ \
-    libpq-dev \
-    build-essential \
-    curl \
-    && apt-get autoremove -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+        postgresql-client \
+        gcc \
+        g++ \
+        libpq-dev \
+        build-essential \
+        curl && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.txt /app/
